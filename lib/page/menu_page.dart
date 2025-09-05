@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_lotto/page/buttom_nav.dart';
 import 'package:mobile_lotto/page/wallet_page.dart';
-
 import 'package:mobile_lotto/model/response/login_res_post.dart';
+
+
 
 class Menu_page extends StatefulWidget {
   final User? user;
@@ -65,12 +67,8 @@ class _Menu_pageState extends State<Menu_page> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 child: GridView.count(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -78,13 +76,18 @@ class _Menu_pageState extends State<Menu_page> {
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 20,
                   children: [
-                    buildMenuCard(Icons.shopping_cart, "ซื้อหวย"),
-                    buildMenuCard(
-                      Icons.account_balance_wallet,
-                      "เครดิตเงิน(Wallet)",
-                    ),
-                    buildMenuCard(Icons.verified, "ตรวจลอตเตอรี่"),
-                    buildMenuCard(Icons.access_time, "ผลรางวัลงวดที่ผ่านมา"),
+                    buildMenuCard(Icons.shopping_cart, "ซื้อหวย", onTap: () {
+                      Navigator.pushNamed(context, '/buy');
+                    }),
+                    buildMenuCard(Icons.account_balance_wallet, "เครดิตเงิน(Wallet)", onTap: () {
+                      Navigator.pushNamed(context, '/wallet');
+                    }),
+                    buildMenuCard(Icons.verified, "ตรวจลอตเตอรี่", onTap: () {
+                      Navigator.pushNamed(context, '/check-lottery');
+                    }),
+                    buildMenuCard(Icons.access_time, "ผลรางวัลงวดที่ผ่านมา", onTap: () {
+                      Navigator.pushNamed(context, '/previous-results');
+                    }),
                   ],
                 ),
               ),
@@ -92,28 +95,16 @@ class _Menu_pageState extends State<Menu_page> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xFF085056),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "หน้าแรก"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: "หวยของฉัน",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
-            label: "กระเป๋าเงิน",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "สมาชิก"),
-        ],
+
+      bottomNavigationBar: BottomNav(
+        currentIndex: 0,
+        routeNames: ['/home', '/my-tickets', '/wallet', '/member'],
+
       ),
     );
   }
 
-  Widget buildMenuCard(IconData icon, String text) {
+  Widget buildMenuCard(IconData icon, String text, {required VoidCallback onTap}) {
     return InkWell(
       onTap: () {
         if (text == "เครดิตเงิน(Wallet)") {
@@ -123,6 +114,7 @@ class _Menu_pageState extends State<Menu_page> {
           );
         }
       },
+
       child: Container(
         decoration: BoxDecoration(
           color: Colors.transparent,
